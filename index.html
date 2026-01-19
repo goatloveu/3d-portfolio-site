@@ -5,24 +5,13 @@
     <title>Алексей Кобец — 3D Designer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        /*
-           ГЛАВНЫЕ НАСТРОЙКИ ТЕМЫ САЙТА
-           Здесь задаются основные цвета, скругления и общие параметры.
-           Если нужно изменить оттенки — удобнее всего делать это в этом блоке.
-        */
         :root {
             --bg: #f2f3f5;
             --card-bg: #ffffff;
             --text-main: #111111;
             --text-muted: #666666;
-            /*
-               ГЛАВНЫЙ АКЦЕНТНЫЙ ЦВЕТ САЙТА
-               Был оранжевый #ff7a2f, теперь тёмно-синий для контраста.
-               Всё, что завязано на var(--accent), поменяет цвет автоматически.
-            */
-            --accent: #00008B;
-            /* Мягкий акцентный фон для карточек, плашек и подсветки */
-            --accent-soft: rgba(0, 0, 139, 0.12);
+            --accent: #ff7a2f;
+            --accent-soft: rgba(255, 122, 47, 0.12);
             --border-soft: rgba(0,0,0,0.06);
             --shadow-soft: 0 16px 40px rgba(0,0,0,0.08);
             --radius-lg: 18px;
@@ -69,10 +58,6 @@
             padding: 0 20px;
         }
 
-        /*
-           ШАПКА САЙТА (HEADER)
-           Фиксируется сверху и имеет лёгкое размытие фона.
-        */
         header {
             position: sticky;
             top: 0;
@@ -90,33 +75,17 @@
             gap: 20px;
         }
 
-        /*
-           БЛОК ЛОГОТИПА
-           Содержит сам логотип (картинка) и текстовое описание имени/роли.
-        */
         .logo-wrap {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /*
-           КАРТИНКА ЛОГОТИПА
-           СЮДА НУЖНО ПОДСТАВИТЬ ПУТЬ К ТВОЕМУ ФАЙЛУ ЛОГОТИПА.
-           Пример:
-             background-image: url("img/logo-akobets.svg");
-             или:
-             background-image: url("assets/logo.png");
-        */
-        .logo-img {
-            width: 40px;
-            height: 40px;
+        .logo-mark {
+            width: 34px;
+            height: 34px;
             border-radius: 40%;
-            background-color: #00008B; /* фоновый цвет, пока нет логотипа */
-            background-position: center;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-image: url("img/3d-portfolio/Logo-ak.png"); /* твой логотип в шапке */
+            background: radial-gradient(circle at 30% 20%, #ffe7d5 0, #ff7a2f 45%, #5b3bff 100%);
             box-shadow: 0 0 0 3px rgba(255,255,255,0.6), 0 16px 30px rgba(0,0,0,0.22);
         }
 
@@ -138,10 +107,6 @@
                 color: var(--text-muted);
             }
 
-        /*
-           НАВИГАЦИЯ ПО СТРАНИЦЕ
-           Ссылки: Проекты, Навыки, Обо мне, Контакты.
-        */
         .nav-links {
             display: flex;
             gap: 18px;
@@ -154,7 +119,6 @@
                 padding-bottom: 3px;
             }
 
-                /* Подчёркивание ссылки при наведении — акцентным цветом */
                 .nav-links a::after {
                     content: "";
                     position: absolute;
@@ -186,10 +150,6 @@
             color: var(--text-muted);
         }
 
-        /*
-           КНОПКИ (общий стиль)
-           Используются для действий: "Связаться", "Смотреть работы" и т.п.
-        */
         .btn {
             border-radius: var(--radius-full);
             padding: 9px 20px;
@@ -203,19 +163,15 @@
             white-space: nowrap;
         }
 
-        /*
-           ОСНОВНАЯ АКЦЕНТНАЯ КНОПКА
-           Цвет фона — var(--accent) (тёмно-синий).
-        */
         .btn-primary {
             background: var(--accent);
             color: #ffffff;
-            box-shadow: 0 10px 25px rgba(0,0,139,0.4);
+            box-shadow: 0 10px 25px rgba(255,122,47,0.4);
         }
 
             .btn-primary:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 16px 35px rgba(0,0,139,0.55);
+                box-shadow: 0 16px 35px rgba(255,122,47,0.55);
             }
 
         .btn-outline {
@@ -238,7 +194,7 @@
             padding: 60px 0;
         }
 
-        /* Hero (первый экран) */
+        /* Hero */
 
         .hero {
             padding-top: 40px;
@@ -270,7 +226,7 @@
             height: 8px;
             border-radius: 999px;
             background: var(--accent);
-            box-shadow: 0 0 0 6px rgba(0,0,139,0.35);
+            box-shadow: 0 0 0 6px rgba(255,122,47,0.35);
         }
 
         .hero-title {
@@ -371,8 +327,7 @@
         .hero-render {
             position: relative;
             border-radius: 20px;
-            /* немного скорректирован фон под более нейтральный вид */
-            background: radial-gradient(circle at 10% 0, #e0e4ff 0, #00008B 40%, #181824 100%);
+            background: radial-gradient(circle at 10% 0, #ffe7d5 0, #ff7a2f 40%, #181824 100%);
             height: 260px;
             overflow: hidden;
             display: flex;
@@ -408,7 +363,7 @@
             width: 68%;
             aspect-ratio: 1/1;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 0, #fff6ea 0, #d0d8ff 35%, #00008B 60%, #5b3bff 100%);
+            background: radial-gradient(circle at 30% 0, #fff6ea 0, #ffd0a3 35%, #ff7a2f 60%, #5b3bff 100%);
             box-shadow: 0 25px 45px rgba(0,0,0,0.55), inset 0 -15px 30px rgba(0,0,0,0.5);
         }
 
@@ -439,7 +394,7 @@
             border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.45);
             border-style: solid;
-            box-shadow: 0 0 25px rgba(255,255,255,0.45), 0 0 60px rgba(0,0,139,0.6);
+            box-shadow: 0 0 25px rgba(255,255,255,0.45), 0 0 60px rgba(255,122,47,0.8);
         }
 
         .hero-sphere-badge {
@@ -462,7 +417,7 @@
             height: 9px;
             border-radius: 999px;
             background: var(--accent);
-            box-shadow: 0 0 0 4px rgba(0,0,139,0.45);
+            box-shadow: 0 0 0 4px rgba(255,122,47,0.45);
         }
 
         .hero-card-footer {
@@ -486,7 +441,7 @@
             border: 1px solid rgba(0,0,0,0.06);
         }
 
-        /* Общие заголовки секций */
+        /* Sections common */
 
         .section-header {
             display: flex;
@@ -532,8 +487,7 @@
                 content: "";
                 position: absolute;
                 inset: 0;
-                /* подсветка карточки при наведении — тёмно-синий оттенок */
-                background: radial-gradient(circle at 0 0, rgba(0,0,139,0.08), transparent 55%);
+                background: radial-gradient(circle at 0 0, rgba(255,122,47,0.08), transparent 55%);
                 opacity: 0;
                 transition: opacity var(--transition-fast);
                 pointer-events: none;
@@ -542,7 +496,7 @@
             .project-card:hover {
                 transform: translateY(-8px);
                 box-shadow: 0 24px 55px rgba(0,0,0,0.16);
-                border-color: rgba(0,0,139,0.7);
+                border-color: rgba(255,122,47,0.7);
                 background: #ffffff;
             }
 
@@ -566,7 +520,7 @@
             width: 72%;
             aspect-ratio: 1/1;
             border-radius: 26px;
-            background: radial-gradient(circle at 30% 0, #fff5ea 0, #d2d8ff 30%, #00008B 52%, #141414 100%);
+            background: radial-gradient(circle at 30% 0, #fff5ea 0, #ffd2a5 30%, #ff7a2f 52%, #141414 100%);
             box-shadow: 0 20px 45px rgba(0,0,0,0.75), inset 0 -12px 28px rgba(0,0,0,0.55);
             position: relative;
         }
@@ -636,10 +590,10 @@
         }
 
         .skills-panel {
-            background: radial-gradient(circle at 0 0, rgba(0,0,139,0.18), rgba(255,255,255,0.95));
+            background: radial-gradient(circle at 0 0, rgba(255,122,47,0.18), rgba(255,255,255,0.95));
             border-radius: var(--radius-lg);
             padding: 16px 16px 18px;
-            border: 1px solid rgba(0,0,139,0.45);
+            border: 1px solid rgba(255,122,47,0.45);
             box-shadow: 0 18px 35px rgba(0,0,0,0.18);
             font-size: 13px;
             color: var(--text-main);
@@ -754,7 +708,7 @@
                     outline: none;
                     border-color: var(--accent);
                     background: #ffffff;
-                    box-shadow: 0 0 0 1px rgba(0,0,139,0.5), 0 10px 25px rgba(0,0,0,0.18);
+                    box-shadow: 0 0 0 1px rgba(255,122,47,0.5), 0 10px 25px rgba(0,0,0,0.18);
                     transform: translateY(-1px);
                 }
 
@@ -821,7 +775,7 @@
             .contacts-link:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-                border-color: rgba(0,0,139,0.75);
+                border-color: rgba(255,122,47,0.75);
                 background: #ffffff;
             }
 
@@ -840,7 +794,7 @@
             flex-wrap: wrap;
         }
 
-        /* Modal (окно с описанием проекта) */
+        /* Modal */
 
         .modal-backdrop {
             position: fixed;
@@ -870,7 +824,7 @@
         }
 
         .modal-visual {
-            background: radial-gradient(circle at 20% 0, #e0e4ff 0, #00008B 45%, #181824 100%);
+            background: radial-gradient(circle at 20% 0, #ffe7d5 0, #ff7a2f 45%, #181824 100%);
             padding: 18px;
             display: flex;
             align-items: center;
@@ -880,7 +834,7 @@
         .modal-visual-inner {
             width: 100%;
             border-radius: 18px;
-            background: radial-gradient(circle at 30% 0, #fff6ea 0, #d0d8ff 30%, #00008B 55%, #5b3bff 100%);
+            background: radial-gradient(circle at 30% 0, #fff6ea 0, #ffd0a3 30%, #ff7a2f 55%, #5b3bff 100%);
             box-shadow: 0 24px 55px rgba(0,0,0,0.7), inset 0 -16px 32px rgba(0,0,0,0.6);
             position: relative;
             aspect-ratio: 4/3;
@@ -1055,22 +1009,17 @@
 </head>
 <body>
     <div class="page">
-        <!--
-            HEADER / ШАПКА САЙТА
-            Логотип слева, навигация по разделам и кнопка "Связаться".
-        -->
+        <!-- Header -->
         <header>
             <div class="container">
                 <div class="nav">
-                    <a href="#top" class="logo-wrap">
-                        <!-- Блок с картинкой логотипа (фон через CSS .logo-img) -->
-                        <div class="logo-img"></div>
-                        <!-- Текст рядом с логотипом: имя и роль -->
+                    <div class="logo-wrap">
+                        <div class="logo-mark"></div>
                         <div class="logo-text">
                             <span>Alexey Kobets</span>
                             <span>3D Designer · Краснодар</span>
                         </div>
-                    </a>
+                    </div>
                     <nav class="nav-links">
                         <a href="#projects">Проекты</a>
                         <a href="#skills">Навыки</a>
@@ -1088,7 +1037,7 @@
         </header>
 
         <main>
-            <!-- HERO — первый экран с именем и описанием -->
+            <!-- Hero -->
             <section class="hero" id="top">
                 <div class="container">
                     <div class="hero-grid">
@@ -1149,7 +1098,7 @@
                 </div>
             </section>
 
-            <!-- PROJECTS — список проектов -->
+            <!-- Projects -->
             <section id="projects">
                 <div class="container">
                     <div class="section-header">
@@ -1255,7 +1204,7 @@
                 </div>
             </section>
 
-            <!-- SKILLS — блок с навыками -->
+            <!-- Skills -->
             <section id="skills">
                 <div class="container">
                     <div class="section-header">
@@ -1302,7 +1251,7 @@
                 </div>
             </section>
 
-            <!-- ABOUT — блок "Обо мне" -->
+            <!-- About -->
             <section id="about">
                 <div class="container">
                     <div class="section-header">
@@ -1317,7 +1266,7 @@
                     <div class="about-card">
                         <div class="about-text">
                             <p>
-                                Работаю 3D‑дизайнером и визуализатором, специализируюсь на продуктовых рендерах, интерьерах и объектном дизайне для бизнеса.
+                                Работаю 3D‑дизайнером и визуализатором, специализируюсь на продуктовых рендерах, интерьерах и объектовом дизайне для бизнеса.
                                 Помогаю брендам аккуратно упаковать продукт и показать его ценность через визуал.
                             </p>
                             <p>
@@ -1347,7 +1296,7 @@
                 </div>
             </section>
 
-            <!-- CONTACTS — контакты и ссылки -->
+            <!-- Contacts -->
             <section id="contacts">
                 <div class="container">
                     <div class="section-header">
@@ -1358,9 +1307,9 @@
                             Напишите, если нужен 3D‑рендер для лендинга, маркетплейса, презентации или промо‑кампании. Ответ последует в течение 1–2 рабочих дней.
                         </div>
                     </div>
+
                     <div class="contacts-layout">
                         <div>
-                            <!-- Форма обратной связи (без реальной отправки, нужна интеграция на бэкенде) -->
                             <form class="contact-form">
                                 <div class="form-row">
                                     <div class="form-field">
@@ -1386,7 +1335,6 @@
                             </form>
                         </div>
                         <div>
-                            <!-- Список внешних ссылок на портфолио и соцсети -->
                             <div class="contacts-links-card">
                                 <div class="contacts-links-title">Портфолио и соцсети</div>
                                 <div class="contacts-links-list">
@@ -1414,7 +1362,6 @@
             </section>
         </main>
 
-        <!-- FOOTER — подвал сайта -->
         <footer>
             <div class="container">
                 <div class="footer-inner">
@@ -1427,7 +1374,7 @@
         </footer>
     </div>
 
-    <!-- MODAL — окно с подробностями проекта -->
+    <!-- Modal -->
     <div class="modal-backdrop" id="project-modal">
         <div class="modal">
             <div class="modal-visual">
@@ -1456,7 +1403,7 @@
     </div>
 
     <script>
-        // ПЛАВНЫЙ СКРОЛЛ ПО СТРАНИЦЕ ДО НУЖНОГО БЛОКА
+        // Smooth scroll
         document.querySelectorAll("[data-scroll-target]").forEach(function (btn) {
             btn.addEventListener("click", function () {
                 var target = btn.getAttribute("data-scroll-target");
@@ -1467,10 +1414,10 @@
             });
         });
 
-        // Автоматическая подстановка текущего года в футере
+        // Dynamic year
         document.getElementById("year").textContent = new Date().getFullYear();
 
-        // Данные для модального окна с проектами
+        // Project modal data
         var projectDetails = {
             1: {
                 title: "Product render for e‑commerce",
@@ -1540,7 +1487,6 @@
         var modalDescription = document.getElementById("modal-description");
         var modalCloseBtn = document.getElementById("modal-close");
 
-        // Открытие модального окна при клике на карточку проекта
         document.querySelectorAll(".project-card").forEach(function (card) {
             card.addEventListener("click", function () {
                 var projectId = card.getAttribute("data-project");
@@ -1562,7 +1508,6 @@
             });
         });
 
-        // Функция закрытия модального окна
         function closeModal() {
             modalBackdrop.classList.remove("active");
         }
@@ -1582,5 +1527,4 @@
     </script>
 </body>
 </html>
-
 
