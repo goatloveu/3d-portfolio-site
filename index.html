@@ -1,0 +1,1585 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Алексей Кобец — 3D Designer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        /*
+           ГЛАВНЫЕ НАСТРОЙКИ ТЕМЫ САЙТА
+           Здесь задаются основные цвета, скругления и общие параметры.
+           Если нужно изменить оттенки — удобнее всего делать это в этом блоке.
+        */
+        :root {
+            --bg: #f2f3f5;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-muted: #666666;
+            /*
+               ГЛАВНЫЙ АКЦЕНТНЫЙ ЦВЕТ САЙТА
+               Был оранжевый #ff7a2f, теперь тёмно-синий для контраста.
+               Всё, что завязано на var(--accent), поменяет цвет автоматически.
+            */
+            --accent: #00008B;
+            /* Мягкий акцентный фон для карточек, плашек и подсветки */
+            --accent-soft: rgba(0, 0, 139, 0.12);
+            --border-soft: rgba(0,0,0,0.06);
+            --shadow-soft: 0 16px 40px rgba(0,0,0,0.08);
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --radius-full: 999px;
+            --transition-fast: 0.25s ease;
+            --max-width: 1120px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, #ffffff 0, #f0f2f5 40%, #e6e8ec 100%);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Layout */
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /*
+           ШАПКА САЙТА (HEADER)
+           Фиксируется сверху и имеет лёгкое размытие фона.
+        */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(16px);
+            background: linear-gradient( to bottom, rgba(242, 243, 245, 0.92), rgba(242, 243, 245, 0.7), rgba(242, 243, 245, 0) );
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            gap: 20px;
+        }
+
+        /*
+           БЛОК ЛОГОТИПА
+           Содержит сам логотип (картинка) и текстовое описание имени/роли.
+        */
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /*
+           КАРТИНКА ЛОГОТИПА
+           СЮДА НУЖНО ПОДСТАВИТЬ ПУТЬ К ТВОЕМУ ФАЙЛУ ЛОГОТИПА.
+           Пример:
+             background-image: url("img/logo-akobets.svg");
+             или:
+             background-image: url("assets/logo.png");
+        */
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 40%;
+            background-color: #00008B; /* фоновый цвет, пока нет логотипа */
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            /* ЗДЕСЬ УКАЗЫВАЕМ ПУТЬ К ФАЙЛУ ЛОГОТИПА */
+            /* background-image: url("ПУТЬ/К/ФАЙЛУ/ЛОГОТИПА.svg"); */
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.6), 0 16px 30px rgba(0,0,0,0.22);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+            .logo-text span:first-child {
+                font-size: 15px;
+                font-weight: 600;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .logo-text span:last-child {
+                font-size: 12px;
+                color: var(--text-muted);
+            }
+
+        /*
+           НАВИГАЦИЯ ПО СТРАНИЦЕ
+           Ссылки: Проекты, Навыки, Обо мне, Контакты.
+        */
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+            .nav-links a {
+                position: relative;
+                padding-bottom: 3px;
+            }
+
+                /* Подчёркивание ссылки при наведении — акцентным цветом */
+                .nav-links a::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 2px;
+                    width: 0;
+                    border-radius: 999px;
+                    background: var(--accent);
+                    transition: width var(--transition-fast);
+                }
+
+                .nav-links a:hover::after {
+                    width: 100%;
+                }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pill-text {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.8);
+            color: var(--text-muted);
+        }
+
+        /*
+           КНОПКИ (общий стиль)
+           Используются для действий: "Связаться", "Смотреть работы" и т.п.
+        */
+        .btn {
+            border-radius: var(--radius-full);
+            padding: 9px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        /*
+           ОСНОВНАЯ АКЦЕНТНАЯ КНОПКА
+           Цвет фона — var(--accent) (тёмно-синий).
+        */
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,139,0.4);
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 16px 35px rgba(0,0,139,0.55);
+            }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(0,0,0,0.06);
+            color: var(--text-main);
+        }
+
+            .btn-outline:hover {
+                background: #ffffff;
+                transform: translateY(-1px);
+                box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+            }
+
+        main {
+            flex: 1;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        /* Hero (первый экран) */
+
+        .hero {
+            padding-top: 40px;
+            padding-bottom: 60px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(0,0,0,0.05);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .hero-eyebrow-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 6px rgba(0,0,139,0.35);
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 4vw, 42px);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            margin-bottom: 22px;
+        }
+
+        .hero-description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 460px;
+            margin-bottom: 26px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .hero-meta-pill {
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Hero visual card */
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-card {
+            position: relative;
+            background: radial-gradient(circle at 20% 0, #ffffff 0, #f5f5ff 40%, #ebeef7 100%);
+            border-radius: 26px;
+            padding: 22px 22px 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-soft);
+            overflow: hidden;
+        }
+
+        .hero-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .hero-card-loc {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+            .hero-card-loc span:first-child {
+                text-transform: uppercase;
+                letter-spacing: 0.16em;
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+            .hero-card-loc span:last-child {
+                font-weight: 600;
+            }
+
+        .hero-card-tag {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.06);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        .hero-render {
+            position: relative;
+            border-radius: 20px;
+            /* немного скорректирован фон под более нейтральный вид */
+            background: radial-gradient(circle at 10% 0, #e0e4ff 0, #00008B 40%, #181824 100%);
+            height: 260px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        .hero-orbit {
+            position: absolute;
+            width: 220%;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            border: 1px dashed rgba(255,255,255,0.11);
+            opacity: 0.7;
+            transform: rotate(-15deg);
+        }
+
+            .hero-orbit:nth-child(1) {
+                width: 140%;
+            }
+
+            .hero-orbit:nth-child(2) {
+                width: 180%;
+            }
+
+            .hero-orbit:nth-child(3) {
+                width: 220%;
+            }
+
+        .hero-sphere {
+            position: relative;
+            width: 68%;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 0, #fff6ea 0, #d0d8ff 35%, #00008B 60%, #5b3bff 100%);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.55), inset 0 -15px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-sphere-glow {
+            position: absolute;
+            inset: 18%;
+            border-radius: inherit;
+            background: radial-gradient(circle at 30% 0, rgba(255,255,255,0.95), transparent 62%);
+            mix-blend-mode: screen;
+            opacity: 0.9;
+        }
+
+        .hero-sphere-reflect {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            top: 8%;
+            left: 8%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 0, rgba(255,255,255,0.9), transparent 70%);
+            opacity: 0.85;
+            filter: blur(1px);
+        }
+
+        .hero-sphere-ring {
+            position: absolute;
+            inset: 7%;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.45);
+            border-style: solid;
+            box-shadow: 0 0 25px rgba(255,255,255,0.45), 0 0 60px rgba(0,0,139,0.6);
+        }
+
+        .hero-sphere-badge {
+            position: absolute;
+            right: 8%;
+            bottom: 14%;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(12,12,20,0.9);
+            color: #ffffff;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+        }
+
+        .hero-sphere-badge-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0,0,139,0.45);
+        }
+
+        .hero-card-footer {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+            .hero-card-footer span strong {
+                font-weight: 600;
+                color: var(--text-main);
+            }
+
+        .hero-card-footer-pill {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Общие заголовки секций */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 360px;
+        }
+
+        /* Projects */
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            position: relative;
+            background: rgba(255,255,255,0.9);
+            border-radius: var(--radius-lg);
+            padding: 10px 10px 12px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-soft);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+        }
+
+            .project-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                /* подсветка карточки при наведении — тёмно-синий оттенок */
+                background: radial-gradient(circle at 0 0, rgba(0,0,139,0.08), transparent 55%);
+                opacity: 0;
+                transition: opacity var(--transition-fast);
+                pointer-events: none;
+            }
+
+            .project-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 24px 55px rgba(0,0,0,0.16);
+                border-color: rgba(0,0,139,0.7);
+                background: #ffffff;
+            }
+
+                .project-card:hover::before {
+                    opacity: 1;
+                }
+
+        .project-thumb {
+            border-radius: 14px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #20202a, #3c2d5b);
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .project-thumb-inner {
+            width: 72%;
+            aspect-ratio: 1/1;
+            border-radius: 26px;
+            background: radial-gradient(circle at 30% 0, #fff5ea 0, #d2d8ff 30%, #00008B 52%, #141414 100%);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.75), inset 0 -12px 28px rgba(0,0,0,0.55);
+            position: relative;
+        }
+
+            .project-thumb-inner::after {
+                content: "";
+                position: absolute;
+                inset: 14%;
+                border-radius: inherit;
+                border: 2px solid rgba(255,255,255,0.55);
+                opacity: 0.8;
+            }
+
+        .project-label {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(8,8,12,0.88);
+            color: #ffffff;
+            font-size: 11px;
+        }
+
+        .project-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .project-type {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Skills */
+
+        .skills-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .skills-group-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .skills-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(0,0,0,0.06);
+            font-size: 13px;
+            color: var(--text-main);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+        }
+
+        .skills-panel {
+            background: radial-gradient(circle at 0 0, rgba(0,0,139,0.18), rgba(255,255,255,0.95));
+            border-radius: var(--radius-lg);
+            padding: 16px 16px 18px;
+            border: 1px solid rgba(0,0,139,0.45);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.18);
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+            .skills-panel strong {
+                font-weight: 600;
+            }
+
+        /* About */
+
+        .about-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 28px;
+            background: rgba(255,255,255,0.92);
+            border-radius: 22px;
+            padding: 24px 24px 26px;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .about-text p {
+            margin: 0 0 12px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .about-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12px;
+        }
+
+        .about-meta-item {
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(246,247,250,1);
+            border: 1px dashed rgba(0,0,0,0.08);
+        }
+
+        .about-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .about-highlight {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        /* Contacts */
+
+        .contacts-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.95);
+            border-radius: 22px;
+            padding: 20px 20px 22px;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .form-field {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 13px;
+        }
+
+            .form-field label {
+                color: var(--text-muted);
+            }
+
+            .form-field input,
+            .form-field textarea {
+                border-radius: 12px;
+                border: 1px solid rgba(0,0,0,0.08);
+                padding: 9px 11px;
+                font: inherit;
+                resize: vertical;
+                min-height: 0;
+                background: #f9fafb;
+                transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+            }
+
+            .form-field textarea {
+                min-height: 110px;
+            }
+
+                .form-field input:focus,
+                .form-field textarea:focus {
+                    outline: none;
+                    border-color: var(--accent);
+                    background: #ffffff;
+                    box-shadow: 0 0 0 1px rgba(0,0,139,0.5), 0 10px 25px rgba(0,0,0,0.18);
+                    transform: translateY(-1px);
+                }
+
+        .form-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .contact-form-footer {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .contacts-links-card {
+            border-radius: 22px;
+            padding: 18px 18px 20px;
+            border: 1px dashed rgba(0,0,0,0.09);
+            background: var(--accent-soft);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+
+        .contacts-links-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .contacts-links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .contacts-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.95);
+            padding: 9px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+        }
+
+            .contacts-link span {
+                font-size: 13px;
+            }
+
+            .contacts-link small {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+            .contacts-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+                border-color: rgba(0,0,139,0.75);
+                background: #ffffff;
+            }
+
+        footer {
+            padding: 22px 0 26px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Modal (окно с описанием проекта) */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(4,4,10,0.74);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 20px;
+        }
+
+            .modal-backdrop.active {
+                display: flex;
+            }
+
+        .modal {
+            max-width: 820px;
+            width: 100%;
+            background: #f4f5f9;
+            border-radius: 24px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.16);
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        }
+
+        .modal-visual {
+            background: radial-gradient(circle at 20% 0, #e0e4ff 0, #00008B 45%, #181824 100%);
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-visual-inner {
+            width: 100%;
+            border-radius: 18px;
+            background: radial-gradient(circle at 30% 0, #fff6ea 0, #d0d8ff 30%, #00008B 55%, #5b3bff 100%);
+            box-shadow: 0 24px 55px rgba(0,0,0,0.7), inset 0 -16px 32px rgba(0,0,0,0.6);
+            position: relative;
+            aspect-ratio: 4/3;
+        }
+
+        .modal-content {
+            padding: 18px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .modal-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close-btn {
+            border-radius: 999px;
+            border: none;
+            background: rgba(0,0,0,0.05);
+            padding: 5px 9px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .modal-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .modal-meta-pill {
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px dashed rgba(0,0,0,0.14);
+            background: rgba(255,255,255,0.85);
+        }
+
+        .modal-description {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 960px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .skills-layout,
+            .about-card,
+            .contacts-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            header {
+                position: static;
+                background: transparent;
+            }
+
+            .nav {
+                padding: 12px 0 4px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-cta .pill-text {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 20px;
+            }
+
+            section {
+                padding: 44px 0;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                padding: 9px 9px 11px;
+            }
+
+            .hero-card {
+                border-radius: 20px;
+            }
+
+            .hero-render {
+                height: 220px;
+            }
+
+            .contact-form {
+                padding: 16px;
+            }
+
+            .contacts-links-card {
+                padding: 16px;
+            }
+
+            .modal {
+                border-radius: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!--
+            HEADER / ШАПКА САЙТА
+            Логотип слева, навигация по разделам и кнопка "Связаться".
+        -->
+        <header>
+            <div class="container">
+                <div class="nav">
+                    <a href="#top" class="logo-wrap">
+                        <!-- Блок с картинкой логотипа (фон через CSS .logo-img) -->
+                        <div class="logo-img"></div>
+                        <!-- Текст рядом с логотипом: имя и роль -->
+                        <div class="logo-text">
+                            <span>Alexey Kobets</span>
+                            <span>3D Designer · Краснодар</span>
+                        </div>
+                    </a>
+                    <nav class="nav-links">
+                        <a href="#projects">Проекты</a>
+                        <a href="#skills">Навыки</a>
+                        <a href="#about">Обо мне</a>
+                        <a href="#contacts">Контакты</a>
+                    </nav>
+                    <div class="nav-cta">
+                        <div class="pill-text">Свободен для новых проектов</div>
+                        <button class="btn btn-primary" data-scroll-target="#contacts">
+                            Связаться
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- HERO — первый экран с именем и описанием -->
+            <section class="hero" id="top">
+                <div class="container">
+                    <div class="hero-grid">
+                        <div>
+                            <div class="hero-eyebrow">
+                                <div class="hero-eyebrow-dot"></div>
+                                <span>3D визуализация для брендов и студий</span>
+                            </div>
+                            <h1 class="hero-title">Алексей&nbsp;Кобец</h1>
+                            <div class="hero-subtitle">3D Designer / 3D Visualization</div>
+                            <p class="hero-description">
+                                Помогаю брендам и студиям выделяться за счёт аккуратных 3D‑визуализаций: продуктовые рендеры,
+                                интерьеры, объекты и промо‑сцены для сайтов, рекламы и маркетплейсов.
+                            </p>
+                            <div class="hero-actions">
+                                <button class="btn btn-primary" data-scroll-target="#projects">
+                                    Смотреть работы
+                                </button>
+                                <button class="btn btn-outline" data-scroll-target="#contacts">
+                                    Связаться
+                                </button>
+                            </div>
+                            <div class="hero-meta">
+                                <div class="hero-meta-pill">Product renders · Интерьеры · Объекты</div>
+                                <div class="hero-meta-pill">Работаю фриланс / удалённо</div>
+                            </div>
+                        </div>
+                        <div class="hero-visual">
+                            <div class="hero-card">
+                                <div class="hero-card-header">
+                                    <div class="hero-card-loc">
+                                        <span>Location</span>
+                                        <span>Краснодар, Россия</span>
+                                    </div>
+                                    <div class="hero-card-tag">Realtime 3D Render</div>
+                                </div>
+                                <div class="hero-render">
+                                    <div class="hero-orbit"></div>
+                                    <div class="hero-orbit"></div>
+                                    <div class="hero-orbit"></div>
+                                    <div class="hero-sphere">
+                                        <div class="hero-sphere-glow"></div>
+                                        <div class="hero-sphere-reflect"></div>
+                                        <div class="hero-sphere-ring"></div>
+                                        <div class="hero-sphere-badge">
+                                            <div class="hero-sphere-badge-dot"></div>
+                                            <span>Готов к новым задачам</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hero-card-footer">
+                                    <span>Последние проекты: <strong>e‑commerce, интерьер, промо‑рендеры</strong></span>
+                                    <div class="hero-card-footer-pill">Blender · Cycles · Eevee</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROJECTS — список проектов -->
+            <section id="projects">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Проекты</h2>
+                        </div>
+                        <div class="section-subtitle">
+                            Подборка 3D‑работ: продуктовые рендеры, интерьерные сцены и промо‑визуализации для брендов и маркетплейсов.
+                        </div>
+                    </div>
+                    <div class="projects-grid">
+                        <!-- 10 project cards -->
+                        <article class="project-card" data-project="1">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">E‑commerce</div>
+                            </div>
+                            <div class="project-title">Product render for e‑commerce</div>
+                            <div class="project-type">Чистый студийный рендер для карточек товара в маркетплейсе</div>
+                        </article>
+
+                        <article class="project-card" data-project="2">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Interior</div>
+                            </div>
+                            <div class="project-title">Interior concept — living room</div>
+                            <div class="project-type">Концепт‑интерьер с мягким светом для презентации дизайн‑проекта</div>
+                        </article>
+
+                        <article class="project-card" data-project="3">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Promo</div>
+                            </div>
+                            <div class="project-title">Promo render for campaign</div>
+                            <div class="project-type">Атмосферная промо‑сцена для рекламной кампании бренда</div>
+                        </article>
+
+                        <article class="project-card" data-project="4">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Packshot</div>
+                            </div>
+                            <div class="project-title">Cosmetics product visualization</div>
+                            <div class="project-type">Рендер упаковки косметики для лендинга и соцсетей</div>
+                        </article>
+
+                        <article class="project-card" data-project="5">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Concept</div>
+                            </div>
+                            <div class="project-title">Futuristic object design</div>
+                            <div class="project-type">Концепт‑объект с неоновыми акцентами и глянцевыми материалами</div>
+                        </article>
+
+                        <article class="project-card" data-project="6">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Furniture</div>
+                            </div>
+                            <div class="project-title">3D visualization of furniture set</div>
+                            <div class="project-type">Каталожная визуализация мебели для онлайн‑каталога</div>
+                        </article>
+
+                        <article class="project-card" data-project="7">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Brand</div>
+                            </div>
+                            <div class="project-title">Brand hero render</div>
+                            <div class="project-type">Ключевой 3D‑кадр для главного экрана сайта бренда</div>
+                        </article>
+
+                        <article class="project-card" data-project="8">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Motion</div>
+                            </div>
+                            <div class="project-title">Loop animation frame</div>
+                            <div class="project-type">Ключевой кадр луп‑анимации для промо‑ролика</div>
+                        </article>
+
+                        <article class="project-card" data-project="9">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Archviz</div>
+                            </div>
+                            <div class="project-title">Exterior visualization</div>
+                            <div class="project-type">Архитектурная визуализация фасада для девелопера</div>
+                        </article>
+
+                        <article class="project-card" data-project="10">
+                            <div class="project-thumb">
+                                <div class="project-thumb-inner"></div>
+                                <div class="project-label">Packshot</div>
+                            </div>
+                            <div class="project-title">Set of product renders</div>
+                            <div class="project-type">Серия ракурсов для карточек товара и рекламных баннеров</div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SKILLS — блок с навыками -->
+            <section id="skills">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Навыки</h2>
+                        </div>
+                        <div class="section-subtitle">
+                            Основные инструменты и направления, в которых работаю. Удобно подключиться к вашему пайплайну или собрать визуализацию под ключ.
+                        </div>
+                    </div>
+
+                    <div class="skills-layout">
+                        <div>
+                            <div class="skills-group">
+                                <div class="skills-group-title">Софт</div>
+                                <div class="skills-chips">
+                                    <div class="chip">Blender</div>
+                                    <div class="chip">Substance Painter</div>
+                                    <div class="chip">Adobe Photoshop</div>
+                                    <div class="chip">Adobe Illustrator</div>
+                                    <div class="chip">Figma (превью и подбор референсов)</div>
+                                </div>
+                            </div>
+                            <div class="skills-group" style="margin-top: 14px;">
+                                <div class="skills-group-title">Направления</div>
+                                <div class="skills-chips">
+                                    <div class="chip">Product visualization</div>
+                                    <div class="chip">Архитектурная визуализация</div>
+                                    <div class="chip">Промо‑рендеры и key‑visual</div>
+                                    <div class="chip">Объектная визуализация</div>
+                                    <div class="chip">3D для маркетплейсов</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="skills-panel">
+                                <strong>Формат работы.</strong> Работаю на фрилансе и удалённо: подключаюсь как к разовым задачам,
+                                так и к долгосрочным проектам с регулярными итерациями и A/B‑тестами визуала.<br /><br />
+                                Помогаю бизнесу собрать понятный визуальный язык продукта: от аккуратных карточек товара до
+                                крупного промо‑рендера, который можно использовать в рекламных кампаниях, презентациях и на лендингах.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT — блок "Обо мне" -->
+            <section id="about">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Обо мне</h2>
+                        </div>
+                        <div class="section-subtitle">
+                            Кратко о опыте в 3D и том, как могу усилить визуальную часть продукта и маркетинга.
+                        </div>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="about-text">
+                            <p>
+                                Работаю 3D‑дизайнером и визуализатором, специализируюсь на продуктовых рендерах, интерьерах и объектном дизайне для бизнеса.
+                                Помогаю брендам аккуратно упаковать продукт и показать его ценность через визуал.
+                            </p>
+                            <p>
+                                Для e‑commerce делаю продающие визуализации для карточек товара, лендингов и рекламных креативов.
+                                Для студий — аккуратные превью концептов и 3D‑сцены, которые удобно встраивать в общую коммуникацию бренда.
+                            </p>
+                            <div class="about-meta">
+                                <div class="about-meta-item">Город: Краснодар</div>
+                                <div class="about-meta-item">Формат: фриланс / удалённо</div>
+                                <div class="about-meta-item">Фокус: продукт, интерьеры, промо</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="about-tag">Как это полезно бизнесу</div>
+                            <div class="about-highlight">3D, которое продаёт продукт</div>
+                            <p style="font-size: 14px; color: var(--text-muted); margin: 0 0 10px;">
+                                • Улучшаю презентацию товара на сайте и в маркетплейсах.<br />
+                                • Помогаю донести ключевые преимущества продукта через визуал.<br />
+                                • Даю гибкие сцены, которые можно адаптировать под различные форматы рекламы.
+                            </p>
+                            <p style="font-size: 13px; color: var(--text-muted); margin: 0;">
+                                Если у вас есть референсы, TЗ или только идея — предлагаю понятный план, сроки и аккуратный результат
+                                без перегруза деталями.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACTS — контакты и ссылки -->
+            <section id="contacts">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Контакты</h2>
+                        </div>
+                        <div class="section-subtitle">
+                            Напишите, если нужен 3D‑рендер для лендинга, маркетплейса, презентации или промо‑кампании. Ответ последует в течение 1–2 рабочих дней.
+                        </div>
+                    </div>
+                    <div class="contacts-layout">
+                        <div>
+                            <!-- Форма обратной связи (без реальной отправки, нужна интеграция на бэкенде) -->
+                            <form class="contact-form">
+                                <div class="form-row">
+                                    <div class="form-field">
+                                        <label for="name">Имя</label>
+                                        <input type="text" id="name" name="name" placeholder="Как к вам обращаться" />
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="contact">E‑mail или Telegram</label>
+                                        <input type="text" id="contact" name="contact" placeholder="@username или почта" />
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label for="message">Проект или задача</label>
+                                    <textarea id="message" name="message" placeholder="Кратко опишите задачу, сроки и формат: продуктовый рендер, интерьер, промо и т.п."></textarea>
+                                    <div class="form-hint">Можно приложить ссылку на референсы или TЗ.</div>
+                                </div>
+                                <div class="contact-form-footer">
+                                    <button type="submit" class="btn btn-primary">
+                                        Отправить запрос
+                                    </button>
+                                    <div>Отправляя форму, вы соглашаетесь на обработку данных только для связи по этому проекту.</div>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <!-- Список внешних ссылок на портфолио и соцсети -->
+                            <div class="contacts-links-card">
+                                <div class="contacts-links-title">Портфолио и соцсети</div>
+                                <div class="contacts-links-list">
+                                    <a href="#" class="contacts-link" target="_blank" rel="noopener">
+                                        <span>Behance</span>
+                                        <small>Подборка коммерческих и личных проектов</small>
+                                    </a>
+                                    <a href="#" class="contacts-link" target="_blank" rel="noopener">
+                                        <span>ArtStation</span>
+                                        <small>High‑poly сцены и эксперименты с освещением</small>
+                                    </a>
+                                    <a href="#" class="contacts-link" target="_blank" rel="noopener">
+                                        <span>Dribbble / другие</span>
+                                        <small>Концепты и визуальные исследования</small>
+                                    </a>
+                                    <a href="#" class="contacts-link" target="_blank" rel="noopener">
+                                        <span>Telegram / E‑mail</span>
+                                        <small>Для оперативной связи по проектам</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER — подвал сайта -->
+        <footer>
+            <div class="container">
+                <div class="footer-inner">
+                    <span>© <span id="year"></span> Алексей Кобец · 3D Designer</span>
+                    <button class="btn btn-outline" data-scroll-target="#top">
+                        Вернуться наверх
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MODAL — окно с подробностями проекта -->
+    <div class="modal-backdrop" id="project-modal">
+        <div class="modal">
+            <div class="modal-visual">
+                <div class="modal-visual-inner" id="modal-visual-inner"></div>
+            </div>
+            <div class="modal-content">
+                <div class="modal-top-row">
+                    <div>
+                        <div class="modal-title" id="modal-title">Название проекта</div>
+                        <div class="modal-meta" id="modal-meta">
+                            <div class="modal-meta-pill">Тип проекта</div>
+                            <div class="modal-meta-pill">Задача</div>
+                        </div>
+                    </div>
+                    <button class="modal-close-btn" type="button" id="modal-close">Закрыть</button>
+                </div>
+                <div class="modal-description" id="modal-description">
+                    Краткое описание проекта: задача клиента, подход к сцене и результат. Здесь можно рассказать об особенностях модели, материалов и освещения.
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" data-scroll-target="#projects">Все проекты</button>
+                    <button class="btn btn-primary" data-scroll-target="#contacts">Обсудить похожий проект</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ПЛАВНЫЙ СКРОЛЛ ПО СТРАНИЦЕ ДО НУЖНОГО БЛОКА
+        document.querySelectorAll("[data-scroll-target]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var target = btn.getAttribute("data-scroll-target");
+                var el = document.querySelector(target);
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
+        });
+
+        // Автоматическая подстановка текущего года в футере
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Данные для модального окна с проектами
+        var projectDetails = {
+            1: {
+                title: "Product render for e‑commerce",
+                meta: ["Product visualization", "Карточки товара, маркетплейсы"],
+                description:
+                    "Серия студийных рендеров с акцентом на читаемость формы и материалов. Подготовлены ракурсы для карточек товара, галереи и промо‑баннеров."
+            },
+            2: {
+                title: "Interior concept — living room",
+                meta: ["Interior visualization", "Концепт‑интерьер"],
+                description:
+                    "Интерьер гостиной с мягким естественным освещением, подобранными материалами и мебелью. Сцена использована для презентации дизайн‑проекта и лендинга студии."
+            },
+            3: {
+                title: "Promo render for campaign",
+                meta: ["Promo render", "Key visual"],
+                description:
+                    "Ключевой 3D‑кадр для рекламной кампании бренда. Сфокусировался на выразительном световом рисунке и чистой композиции для адаптации в разные форматы."
+            },
+            4: {
+                title: "Cosmetics product visualization",
+                meta: ["Product visualization", "Beauty / cosmetics"],
+                description:
+                    "Рендер упаковки косметики в минималистичной сцене с деликатными отражениями. Сцена адаптирована под вертикальные и горизонтальные форматы."
+            },
+            5: {
+                title: "Futuristic object design",
+                meta: ["Concept design", "Независимый проект"],
+                description:
+                    "Эксперимент с формой и материалами: неоновые акценты, металлические поверхности и глубокие тени. Используется как часть промо‑визуала и кейса."
+            },
+            6: {
+                title: "3D visualization of furniture set",
+                meta: ["Product visualization", "Furniture"],
+                description:
+                    "Набор ракурсов мебели в нейтральной обстановке. Уделено внимание корректным пропорциям, текстурам дерева и ткани для убедительной презентации."
+            },
+            7: {
+                title: "Brand hero render",
+                meta: ["Branding", "Hero‑section"],
+                description:
+                    "Главный 3D‑кадр для шапки сайта бренда. Сцена собрана так, чтобы на её основе можно было строить различные вариации под кампании."
+            },
+            8: {
+                title: "Loop animation frame",
+                meta: ["Motion / still", "Promo"],
+                description:
+                    "Ключевой кадр луп‑анимации. Настроены материалы и свет, чтобы статичный кадр был самодостаточным и живым для использования как обложка."
+            },
+            9: {
+                title: "Exterior visualization",
+                meta: ["Archviz", "Devloper"],
+                description:
+                    "Экстерьер жилого комплекса с акцентом на окружении и вечернем освещении. Используется в презентационных материалах девелопера."
+            },
+            10: {
+                title: "Set of product renders",
+                meta: ["Product series", "Multi‑angle"],
+                description:
+                    "Комплект ракурсов одного продукта: общий вид, крупные планы деталей и цветов. Подходит для каталога, маркетплейса и лендинга."
+            }
+        };
+
+        var modalBackdrop = document.getElementById("project-modal");
+        var modalTitle = document.getElementById("modal-title");
+        var modalMeta = document.getElementById("modal-meta");
+        var modalDescription = document.getElementById("modal-description");
+        var modalCloseBtn = document.getElementById("modal-close");
+
+        // Открытие модального окна при клике на карточку проекта
+        document.querySelectorAll(".project-card").forEach(function (card) {
+            card.addEventListener("click", function () {
+                var projectId = card.getAttribute("data-project");
+                var data = projectDetails[projectId];
+                if (!data) return;
+
+                modalTitle.textContent = data.title;
+                modalDescription.textContent = data.description;
+
+                modalMeta.innerHTML = "";
+                data.meta.forEach(function (m) {
+                    var pill = document.createElement("div");
+                    pill.className = "modal-meta-pill";
+                    pill.textContent = m;
+                    modalMeta.appendChild(pill);
+                });
+
+                modalBackdrop.classList.add("active");
+            });
+        });
+
+        // Функция закрытия модального окна
+        function closeModal() {
+            modalBackdrop.classList.remove("active");
+        }
+
+        modalCloseBtn.addEventListener("click", closeModal);
+        modalBackdrop.addEventListener("click", function (e) {
+            if (e.target === modalBackdrop) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
